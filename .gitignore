@@ -1,0 +1,6 @@
+.env
+venv/
+__pycache__/
+*.pyc
+*.pyo
+mail_send_getlogs_enabled_response
