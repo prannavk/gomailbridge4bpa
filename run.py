@@ -7,9 +7,8 @@ app = Flask(__name__)
 app.register_blueprint(mail_send_bp)
 app.register_blueprint(zidoc_bp)
 
-
 if __name__ == "__main__":
-    app.run(debug=True, port=FLASK_PORT)
+    app.run(debug=True, host="0.0.0.0", port=FLASK_PORT)
 
 
 
