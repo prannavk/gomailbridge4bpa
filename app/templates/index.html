@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MailBridge4BPA Playground</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            padding: 2rem;
+            background: #f9f9f9;
+            text-align: center;
+        }
+        h1 { color: #333; }
+        .section { margin: 2rem 0; }
+        .card {
+            background: white;
+            padding: 1.5rem;
+            margin: 1rem auto;
+            width: 60%;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>📬 GoBridge4Tasks - GoMailBridge4BPA Playground 🌉</h1>
+    <p>Welcome to your internal API utility dashboard!</p>
+
+    <div class="section">
+        <img src="{{ url_for('static', filename='images/devbooks.jpg') }}"
+             alt="Laptop and books"
+             style="max-width: 70%; border-radius: 10px; box-shadow: 0 0 15px rgba(0,0,0,0.1); margin-bottom: 2rem;">
+    </div>
+
+    <hr>
+
+    <div class="section">
+        <div class="card">
+            <h2>📧 /api/mail_send</h2>
+            <p>Send emails using MailerSend or AWS SES.</p>
+            <p>Use this API to send messages with attachments via POST request.</p>
+        </div>
+
+        <div class="card">
+            <h2>🔄 /api/zidoc_proxy</h2>
+            <p>Proxy to ZIDOC system for fetching data.</p>
+            <p>Handles token authorization and returns JSON from remote SAP endpoints.</p>
+        </div>
+    </div>
+
+    <footer>
+        <hr>
+        <p>🔐 Powered by Flask | ☁️ Hosted on AWS EC2</p>
+    </footer>
+
+</body>
+</html>
