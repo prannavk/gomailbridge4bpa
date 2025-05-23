@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from app.service.mailer import try_mailersend, try_ses, try_mailersend_sdk
+from app.mail_api.service.mailer import try_mailersend, try_ses, try_mailersend_sdk
 from app.utils.decorators import log_request_response
 from app.utils.logger import log, get_log_context
 

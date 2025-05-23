@@ -38,17 +38,30 @@
 
     <div class="section">
         <div class="card">
-            <h2>📧 /api/mail_send</h2>
+            <h2>📧 /api/send-email</h2>
             <p>Send emails using MailerSend or AWS SES.</p>
             <p>Use this API to send messages with attachments via POST request.</p>
         </div>
-
+    
         <div class="card">
-            <h2>🔄 /api/zidoc_proxy</h2>
-            <p>Proxy to ZIDOC system for fetching data.</p>
-            <p>Handles token authorization and returns JSON from remote SAP endpoints.</p>
+            <h2>📊 /api/pzidoc</h2>
+            <p>Returns a flattened iDoc array and an HTML analytics report.</p>
+            <p>Use this for insight-rich visual summaries of failed iDocs.</p>
+        </div>
+    
+        <div class="card">
+            <h2>📦 /api/rawzidoc</h2>
+            <p>Returns the same iDoc array but wrapped in mock OData format.</p>
+            <p>Useful for compatibility testing with systems expecting OData-like responses.</p>
+        </div>
+    
+        <div class="card">
+            <h2>🧠 /api/hfchat</h2>
+            <p>Talk to the Hugging Face LLM for quick diagnostics or SAP help.</p>
+            <p>Send a POST request with a <code>prompt</code> field in JSON.</p>
         </div>
     </div>
+    
 
     <footer>
         <hr>
