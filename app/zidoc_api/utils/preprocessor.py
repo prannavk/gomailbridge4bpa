@@ -70,5 +70,6 @@ def compute_idoc_statistics(idoc_array: list[dict]) -> dict:
                 })
             except Exception:
                 continue
+    print(f"Stats Calc Check : \n {stats} \n ")
 
     return stats
