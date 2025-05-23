@@ -19,11 +19,11 @@ def send_email():
     attachment_name = data.get("attachment_name", "attachment.pdf")
 
     if try_mailersend(to, subject, body, html_body, attachment, attachment_name):
-        return jsonify({"status": "success", "method": "mailersend", "logs": get_log_context() if getlogs else None}), 200
+        return jsonify({"status": "success", "method": "mailersend", "logs": get_log_context() if getlogs else []}), 200
     elif try_mailersend_sdk(to, subject, body, html_body, attachment, attachment_name):
-        return jsonify({"status": "success", "method": "mailersend_sdk", "logs": get_log_context() if getlogs else None}), 200
+        return jsonify({"status": "success", "method": "mailersend_sdk", "logs": get_log_context() if getlogs else []}), 200
     elif try_ses(to, subject, body, html_body, attachment, attachment_name):
-        return jsonify({"status": "success", "method": "aws_ses", "logs": get_log_context() if getlogs else None}), 200
+        return jsonify({"status": "success", "method": "aws_ses", "logs": get_log_context() if getlogs else []}), 200
     else:
         return jsonify({
             "status": "failure",
