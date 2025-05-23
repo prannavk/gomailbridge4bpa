@@ -5,3 +5,5 @@ python-dotenv
 dotenv
 mailersend
 gunicorn
+Flask-Cors
+huggingface_hub
