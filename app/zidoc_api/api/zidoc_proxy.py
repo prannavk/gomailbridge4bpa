@@ -36,7 +36,7 @@ import json
 zidoc_bp = Blueprint('zidoc', __name__)
 
 @zidoc_bp.route("/pzidoc", methods=["GET"])
-@require_api_key
+# @require_api_key
 @log_request_response
 def get_pzidoc() -> Response:
     """Endpoint handler for /pzidoc — returns report + flattened value"""
@@ -51,7 +51,7 @@ def get_pzidoc() -> Response:
 
 
 @zidoc_bp.route("/rawzidoc", methods=["GET"])
-@require_api_key
+# @require_api_key
 @log_request_response
 def get_rawzidoc() -> Response:
     """Endpoint handler for /rawzidoc — returns mock OData metadata + flattened value"""
