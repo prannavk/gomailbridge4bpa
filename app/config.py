@@ -12,11 +12,11 @@ MAILERSEND_FROM_NAME = MAILERSEND_FROM_NAME2
 
 MAILERSEND_ACCOUNTS = [
     {
-        "acc_mail_id" : os.getenv("MAILERSEND_FROM2", "MS_Xtt0Z3@test-vz9dlemm9yq4kj50.mlsender.net"),
+        "acc_mail_id" : os.getenv("MAILERSEND_FROM2", ""),
         "acc_token" : os.getenv("MAILERSEND_API_TOKEN2")
     },
     {
-        "acc_mail_id" : os.getenv("MAILERSEND_FROM", "MS_QQfRqX@test-86org8e9020gew13.mlsender.net"),
+        "acc_mail_id" : os.getenv("MAILERSEND_FROM", ""),
         "acc_token" : os.getenv("MAILERSEND_API_TOKEN")
     }
 ]
