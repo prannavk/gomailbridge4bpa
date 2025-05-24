@@ -30,13 +30,13 @@ from app.zidoc_api.service.zidoc_service import get_flattened_idocs, get_raw_ido
 from app.zidoc_api.hf_service import hf_service
 from app.utils.decorators import log_request_response
 from app.utils.auth import require_api_key
-from app.utils.logger import log
+from app.utils.logger import log, debug_bool
 import json
 
 zidoc_bp = Blueprint('zidoc', __name__)
 
 @zidoc_bp.route("/pzidoc", methods=["GET"])
-# @require_api_key
+@require_api_key
 @log_request_response
 def get_pzidoc() -> Response:
     """Endpoint handler for /pzidoc — returns report + flattened value"""
@@ -51,7 +51,7 @@ def get_pzidoc() -> Response:
 
 
 @zidoc_bp.route("/rawzidoc", methods=["GET"])
-# @require_api_key
+@require_api_key
 @log_request_response
 def get_rawzidoc() -> Response:
     """Endpoint handler for /rawzidoc — returns mock OData metadata + flattened value"""

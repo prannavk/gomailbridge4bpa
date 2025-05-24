@@ -67,7 +67,8 @@
 #     return 200, response.json()
 import requests
 from app.config import ZIDOC_CLIENT_ID, ZIDOC_CLIENT_SECRET, ZIDOC_TOKEN_URL, ZIDOC_SCOPE, ZIDOC_DATA_API_URL
-from app.utils.logger import log
+from app.utils.logger import log, debug_bool
+# from app.zidoc_api.api.zidoc_proxy import debug_bool
 from app.zidoc_api.utils.flattener import flatten_idoc_response
 from app.zidoc_api.utils.preprocessor import compute_idoc_statistics
 from app.zidoc_api.utils.point_generators import (
@@ -83,7 +84,7 @@ _token_cache = {"access_token": None}
 
 
 def get_new_token():
-    log("Requesting new ZIDOC token")
+    log("Requesting new ZIDOC token", debug_bool)
     payload = {
         "client_id": ZIDOC_CLIENT_ID,
         "client_secret": ZIDOC_CLIENT_SECRET,
@@ -95,27 +96,28 @@ def get_new_token():
     if response.status_code == 200:
         access_token = response.json().get("access_token")
         _token_cache["access_token"] = access_token
-        log("ZIDOC token acquired")
+        log("ZIDOC token acquired", debug_bool)
         return access_token
     else:
-        log(f"ZIDOC token fetch failed: {response.status_code} {response.text}")
+        log(f"ZIDOC token fetch failed: {response.status_code} {response.text}", debug_bool)
         return None
 
 
 def get_raw_idocs() -> list[dict]:
     token = _token_cache.get("access_token") or get_new_token()
     headers = {"Authorization": f"Bearer {token}"}
-    log("Calling ZIDOC data API with token")
+    log("Calling ZIDOC data API with token", debug_bool)
     response = requests.get(ZIDOC_DATA_API_URL, headers=headers)
 
     if response.status_code == 401:
-        log("ZIDOC token expired — refreshing")
+        log("ZIDOC token expired — refreshing", debug_bool)
         token = get_new_token()
         headers["Authorization"] = f"Bearer {token}"
         response = requests.get(ZIDOC_DATA_API_URL, headers=headers)
 
     if not response.ok:
-        raise Exception(f"Failed to fetch ZIDOC data: {response.status_code} {response.text}")
+        log("Failed to fetch ZIDOC data", debug_bool)
+        raise Exception(f"Failed to fetch ZIDOC data: {response.status_code} {response.text}")        
 
     return response.json()
 

@@ -20,7 +20,11 @@ MAILERSEND_ACCOUNTS = [
         "acc_token" : os.getenv("MAILERSEND_API_TOKEN")
     }
 ]
-    
+
+# MAILEROO
+MAILEROO_KEY = os.getenv("MAILEROO_API_KEY", "xxxxx")
+MAILEROO_FROM_DOMAINMAIL = "mailsendbotkkp@943da8e672c34539.maileroo.org"
+
 
 # AWS SES
 AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")

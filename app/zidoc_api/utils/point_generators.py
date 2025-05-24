@@ -193,12 +193,14 @@
 from app.zidoc_api.hf_service import hf_service
 from datetime import datetime
 from concurrent.futures import ThreadPoolExecutor
+from app.utils.logger import log, debug_bool
+# from app.zidoc_api.api.zidoc_proxy import debug_bool
 
 def clean_prompt_text(prompt: str) -> str:
     """Applies consistent length + structure trimming to boost speed"""
     return (
         prompt.strip() +
-        "\n\nNote: Respond briefly in 3–5 HTML bullet points using <p> and <ul>. Avoid repetition."
+        "\n\nNote: Respond briefly in 3 to 7 HTML bullet points using <p> and <ul>. Avoid repetition."
     )
 
 def generate_status_analysis(stats: dict) -> str:
@@ -221,8 +223,10 @@ def generate_status_analysis(stats: dict) -> str:
         f"The system processed {total} iDocs. The status breakdown is: {dict(status_counts)}. "
         f"Message types seen were {dict(mestyp_counts)}. iDoc types were {dict(idoctp_counts)}."
         f" What might this indicate about system health or common iDoc errors?"
+        f"SideNote: For \"53\" iDoc status don't say it indicates a potential issue as I believe it means iDoc successfully posted. If all iDocs have 53 status, then in that case praise the developer who has made this possible"
     )
     insight = hf_service.generate_inference_text(query)
+    log(f"1. \n\n {insight} \n\n", debug_bool)
     return summary + f"<div>{insight}</div>"
 
 
@@ -241,6 +245,7 @@ def generate_traffic_spike_insight(stats: dict) -> str:
         f" What could this tell us about load, batch processing, or potential risk hours?"
     )
     insight = hf_service.generate_inference_text(query)
+    log(f"2. \n\n {insight} \n\n", debug_bool)
     return summary + f"<div>{insight}</div>"
 
 
@@ -262,6 +267,7 @@ def generate_segment_error_focus(stats: dict) -> str:
         f" Could any of these segments be causing errors or be misused in posting logic?"
     )
     insight = hf_service.generate_inference_text(query)
+    log(f"3. \n\n {insight} \n\n", debug_bool)
     return summary + f"<div>{insight}</div>"
 
 
@@ -284,6 +290,7 @@ def generate_partner_mismatch_alerts(stats: dict) -> str:
         f" Are any of these critical roles (like AG, WE) missing, and what does their absence indicate?"
     )
     insight = hf_service.generate_inference_text(query)
+    log(f"4. \n\n {insight} \n\n", debug_bool)
     return summary + f"<div>{insight}</div>"
 
 
@@ -309,6 +316,7 @@ def generate_delay_summary(stats: dict) -> str:
         f" What could cause long delays in SAP iDoc flows and how can they be reduced?"
     )
     insight = hf_service.generate_inference_text(query)
+    log(f"5. \n\n {insight} \n\n", debug_bool)
     return summary + f"<div>{insight}</div>"
 
 def generate_all_points_parallel(stats: dict) -> list[str]:

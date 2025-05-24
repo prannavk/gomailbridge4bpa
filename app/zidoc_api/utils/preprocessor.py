@@ -1,6 +1,9 @@
 # FILE: zidoc_utils/preprocessor.py
 from collections import defaultdict
 from datetime import datetime
+# from app.zidoc_api.api.zidoc_proxy import debug_bool
+from app.utils.logger import log, debug_bool
+
 
 def compute_idoc_statistics(idoc_array: list[dict]) -> dict:
     """Runs all central preprocessing and returns reusable metrics for all 5 ideas"""
@@ -70,6 +73,7 @@ def compute_idoc_statistics(idoc_array: list[dict]) -> dict:
                 })
             except Exception:
                 continue
-    print(f"Stats Calc Check : \n {stats} \n ")
+    log(f"Stats Calc Check : \n {stats} \n ", debug_bool)
+    log("\n\n--------------------stats printed-----------------\n\n", debug_bool)
 
     return stats
