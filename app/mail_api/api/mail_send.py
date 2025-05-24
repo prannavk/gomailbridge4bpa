@@ -45,11 +45,11 @@ def send_email():
     # if try_mailersend(to_send_to, subject, body, html_body, attachment, attachment_name): -> Commented as its always failing
     #     return jsonify({"status": "success", "method": "mailersend", "logs": get_log_context() if getlogs else [], "comment":verdict}), 200
     if try_mailersend_sdk(to_send_to, subject, body, html_body, attachment, attachment_name):
-        return jsonify({"status": "success", "method": "mailersend_sdk", "logs": get_log_context() if getlogs else [], "comment":verdict}), 200
+        return jsonify({"status": "success", "method": "mailersend_sdk", "logs": get_log_context() if getlogs else ["sent"], "comment":verdict}), 200
     elif try_maileroo(to_send_to, subject, body, html_body, attachment, attachment_name):
-        return jsonify({"status": "success", "method": "maileroo", "logs": get_log_context() if getlogs else [], "comment":verdict}), 200
-    # elif try_ses(to_send_to, subject, body, html_body, attachment, attachment_name):
-    #     return jsonify({"status": "success", "method": "aws_ses", "logs": get_log_context() if getlogs else [], "comment":verdict}), 200
+        return jsonify({"status": "success", "method": "maileroo", "logs": get_log_context() if getlogs else ["sent"], "comment":verdict}), 200
+    elif try_ses(to_send_to, subject, body, html_body, attachment, attachment_name):
+        return jsonify({"status": "success", "method": "aws_ses", "logs": get_log_context() if getlogs else ["sent"], "comment":verdict}), 200
     else:
         return jsonify({
             "status": "failure",
