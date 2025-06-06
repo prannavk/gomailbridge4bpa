@@ -27,10 +27,12 @@
 
 from flask import Blueprint, request, jsonify, Response
 from app.zidoc_api.service.zidoc_service import get_flattened_idocs, get_raw_idocs, build_zidoc_report
+from app.zidoc_api.utils.stats2 import generate_idoc_analytics2_html_report, generate_idoc_analytics2_text_report
 from app.zidoc_api.hf_service import hf_service
 from app.utils.decorators import log_request_response
 from app.utils.auth import require_api_key
 from app.utils.logger import log, debug_bool
+from app.config import ZIDOC_DATA_API_URL
 import json
 
 zidoc_bp = Blueprint('zidoc', __name__)
@@ -58,10 +60,94 @@ def get_rawzidoc() -> Response:
     log("Handling /rawzidoc request")
     idocs = get_flattened_idocs()
     response = {
-        "odata.metadata": "https://example.com/zidoc/$metadata#ZIDOC",
+        "odata.metadata":  ZIDOC_DATA_API_URL + "$metadata", # "https://example.com/zidoc/$metadata#ZIDOC",
         "value": idocs
     }
     return Response(json.dumps(response), status=200, content_type="application/json")
+
+
+# @zidoc_bp.route("/zidocstats", methods=["GET"])
+# @require_api_key
+# @log_request_response
+# def get_rawzidoc() -> Response:
+#     """Endpoint handler for /zidocstats — only returns zidoc statistics and analytics/statistics string"""
+#     log("Handling /zidocstats request")
+#     idocs = get_flattened_idocs()
+#     response = {}
+#     try:
+#         html_report = generate_idoc_analytics2_html_report(idoc_data=idocs)
+#         text_report = generate_idoc_analytics2_text_report(idoc_data=idocs)
+#         response["idocdataplain"] = text_report
+#         response["idocdatahtml"] = html_report
+#     except Exception as e:
+#         # Need to Handle code here
+#         pass
+#     return Response(json.dumps(response), status=200, content_type="application/json")
+
+@zidoc_bp.route("/zidocstats", methods=["GET"])
+@require_api_key
+@log_request_response
+def get_zidocstats() -> Response:
+    """Endpoint handler for /zidocstats — returns zidoc statistics and analytics/statistics string"""
+    log("Handling /zidocstats request")
+    
+    try:
+        # Get the iDoc data
+        idocs = get_flattened_idocs()
+        
+        # Validate we have data before processing
+        if not idocs:
+            raise ValueError("No iDoc data available in the system")
+            
+        # Generate reports
+        html_report = generate_idoc_analytics2_html_report(idoc_data=idocs)
+        text_report = generate_idoc_analytics2_text_report(idoc_data=idocs)
+        
+        # Validate reports were generated properly
+        if "No iDoc Data Available" in html_report or "No iDoc Data Available" in text_report:
+            raise ValueError("Report generation failed - empty data detected")
+        
+        # Prepare successful response
+        response = {
+            "status": "success",
+            "data": {
+                "idocdataplain": text_report,
+                "idocdatahtml": html_report
+            }
+        }
+        return Response(
+            json.dumps(response),
+            status=200,
+            content_type="application/json"
+        )
+        
+    except ValueError as ve:
+        # Handle business logic errors (no data, empty reports, etc.)
+        error_response = {
+            "status": "error",
+            "message": str(ve),
+            "error_type": "data_validation_error"
+        }
+        return Response(
+            json.dumps(error_response),
+            status=404,  # Not Found for no data
+            content_type="application/json"
+        )
+        
+    except Exception as e:
+        # Handle unexpected errors
+        log(f"Unexpected error in /zidocstats: {str(e)}", level="error")
+        error_response = {
+            "status": "error",
+            "message": "An internal server error occurred while processing your request",
+            "error_type": "server_error",
+            "details": str(e) # if current_app.config.get('DEBUG') else None
+        }
+        return Response(
+            json.dumps(error_response),
+            status=500,
+            content_type="application/json"
+        )
 
 
 # @zidoc_bp.route("/hfchat", methods=["POST"])
