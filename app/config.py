@@ -16,8 +16,8 @@ MAILERSEND_ACCOUNTS = [
         "acc_token" : os.getenv("MAILERSEND_API_TOKEN2")
     },
     {
-        "acc_mail_id" : os.getenv("MAILERSEND_FROM", ""),
-        "acc_token" : os.getenv("MAILERSEND_API_TOKEN")
+        "acc_mail_id" : os.getenv("MAILERSEND_FROM3", ""),
+        "acc_token" : os.getenv("MAILERSEND_API_TOKEN3")
     }
 ]
 
